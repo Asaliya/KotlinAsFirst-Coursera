@@ -1,9 +1,8 @@
-@file:Suppress("UNUSED_PARAMETER")
+@file:Suppress("UNUSED_PARAMETER", "Reformat")
 package lesson2.task1
 
 import lesson1.task1.discriminant
-import kotlin.math.max
-import kotlin.math.sqrt
+import kotlin.math.*
 
 /**
  * Пример
@@ -62,8 +61,14 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = TODO()
+fun ageDescription(age: Int): String {
 
+    return when {
+        (age % 10) == 1 && age % 100 != 11 -> "$age год"
+        (age % 10) in 2..4 && age % 100 !in 12..14 -> "$age года"
+        else -> "$age лет"
+    }
+}
 /**
  * Простая
  *
@@ -73,7 +78,18 @@ fun ageDescription(age: Int): String = TODO()
  */
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
-                   t3: Double, v3: Double): Double = TODO()
+                   t3: Double, v3: Double): Double {
+    val w1 = t1 * v1
+    val w2 = t2 * v2
+    val w3 = t3 * v3
+    val halfWay = (w1 + w2 + w3) / 2
+
+            return when {
+                halfWay < w1 -> halfWay / v1
+                halfWay in w1..(w1 + w2) -> t1 + (halfWay - w1) / v2
+                else -> t1 + t2 + (halfWay - w1 - w2) / v3
+            }
+}
 
 /**
  * Простая
@@ -86,7 +102,14 @@ fun timeForHalfWay(t1: Double, v1: Double,
  */
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
-                       rookX2: Int, rookY2: Int): Int = TODO()
+                       rookX2: Int, rookY2: Int): Int {
+    return when {
+        kingX == rookX1 && kingX != rookX2 && kingY != rookY2 || kingY == rookY1 && kingX != rookX2 && kingY != rookY2 -> 1
+        kingX == rookX2 && kingX != rookX1 && kingY != rookY1 || kingY == rookY2 && kingX != rookX1 && kingY != rookY1 -> 2
+        kingX == rookX1 && kingX == rookX2 || kingY == rookY1 && kingY == rookY2 || kingX == rookX1 && kingY == rookY2 || kingX == rookX2 && kingY == rookY1 -> 3
+        else -> 0
+    }
+}
 
 /**
  * Простая
@@ -100,7 +123,15 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int = TODO()
+                          bishopX: Int, bishopY: Int): Int {
+
+    return when {
+        kingX == rookX || kingY == rookY && abs(kingX - bishopX) != abs(kingY - bishopY)-> 1
+        abs(kingX - bishopX) == abs(kingY - bishopY) && kingX != rookX && kingY != rookY-> 2
+        kingX == rookX || kingY == rookY && abs(kingX - bishopX) == abs(kingY - bishopY) -> 3
+        else -> 0
+    }
+}
 
 /**
  * Простая
@@ -110,7 +141,19 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+
+        val naibolshajaStorona: Double = max(max(a, b), max(b, c))
+        val naimenshajaStorona: Double = min(min(a, b), min(b, c))
+        val tretjaStorona: Double = (a + b + c) - naibolshajaStorona - naimenshajaStorona
+        if (a < (b + c) && b < (a + c) && c < (a + b))
+            return when {
+                naibolshajaStorona.pow(2.0) < naimenshajaStorona.pow(2.0) + tretjaStorona.pow(2.0) -> 0
+                naibolshajaStorona.pow(2.0) == naimenshajaStorona.pow(2.0) + tretjaStorona.pow(2.0) -> 1
+                else -> 2
+            }
+        return -1
+}
 
 /**
  * Средняя
@@ -120,4 +163,18 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    return when {
+        a in c..d && b !in c..d -> (d - a)
+        b in c..d && a !in c..d -> (b - c)
+        a in c..d && b in c..d -> (b - a)
+        c in a..b && d in a..b -> (d - c)
+        else -> -1
+    }
+}
+
+
+fun main(args: Array<String>) {
+    val result = rookOrBishopThreatens(2, 11, 7, 11, 4, 4)
+    println("$result")
+}
