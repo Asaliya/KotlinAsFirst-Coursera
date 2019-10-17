@@ -45,7 +45,7 @@ fun daysInMonth(month: Int, year: Int): Int {
 
     if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
         return 31
-    if (month == 4 || month == 6 || month == 9)
+    if (month == 4 || month == 6 || month == 9 || month == 11)
         return 30
     if (year % 4 == 0 && year % 100 != 0 || year % 100 == 0 && year % 400 == 0)
         if (month == 2)
@@ -62,7 +62,7 @@ fun daysInMonth(month: Int, year: Int): Int {
  */
 fun circleInside(x1: Double, y1: Double, r1: Double,
                  x2: Double, y2: Double, r2: Double) =
-        sqrt(sqr(x2 - x1) + sqr(y2 - y1)) in 0.0..abs(r1 - r2)
+        (sqrt(sqr(x2 - x1) + sqr(y2 - y1)) in 0.0.. abs(r1 - r2)) && r2 >= r1
 
 
 /**
@@ -75,7 +75,7 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    if (a <= r && b <= s || a <= s && b <= r || b <= r && c <= s || b <= s && c <= r || c <= r && a <= s || c <= r && a <= s) {
+    if (a <= r && b <= s || b <= r && a <= s || a <= r && c <= s || c <= r && a <= s || b <= r && c <= s || c <= r && b <= s) {
         return true
     }
     return false
@@ -83,6 +83,6 @@ fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
 
 
 fun main(args: Array<String>) {
-    val result = queenThreatens(3, 3, 5, 5)
+    val result = circleInside(0.6962292908282461, 0.816320457173103, 47.72046349852233, 0.89071467820398, 0.0, 0.7195766679552723)
     println("$result")
 }

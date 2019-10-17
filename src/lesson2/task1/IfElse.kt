@@ -104,9 +104,9 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
     return when {
-        kingX == rookX1 && kingX != rookX2 && kingY != rookY2 || kingY == rookY1 && kingX != rookX2 && kingY != rookY2 -> 1
-        kingX == rookX2 && kingX != rookX1 && kingY != rookY1 || kingY == rookY2 && kingX != rookX1 && kingY != rookY1 -> 2
-        kingX == rookX1 && kingX == rookX2 || kingY == rookY1 && kingY == rookY2 || kingX == rookX1 && kingY == rookY2 || kingX == rookX2 && kingY == rookY1 -> 3
+        kingX == rookX1 && kingX != rookX2 && (kingY != rookY2 || kingY == rookY1) && kingX != rookX2 && kingY != rookY2 -> 1
+        kingX == rookX2 && kingX != rookX1 && (kingY != rookY1 || kingY == rookY2) && kingX != rookX1 && kingY != rookY1 -> 2
+        kingX == rookX1 && (kingX == rookX2 || kingY == rookY1) && (kingY == rookY2 || kingX == rookX1) && (kingY == rookY2 || kingX == rookX2) && kingY == rookY1 -> 3
         else -> 0
     }
 }
@@ -124,11 +124,10 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
-
     return when {
-        kingX == rookX || kingY == rookY && abs(kingX - bishopX) != abs(kingY - bishopY)-> 1
-        abs(kingX - bishopX) == abs(kingY - bishopY) && kingX != rookX && kingY != rookY-> 2
-        kingX == rookX || kingY == rookY && abs(kingX - bishopX) == abs(kingY - bishopY) -> 3
+        (kingX == rookX || kingY == rookY) && abs(kingX - bishopX) != abs(kingY - bishopY) -> 1
+        abs(kingX - bishopX) == abs(kingY - bishopY) && kingX != rookX && kingY != rookY -> 2
+        (kingX == rookX || kingY == rookY) && abs(kingX - bishopX) == abs(kingY - bishopY) -> 3
         else -> 0
     }
 }
@@ -175,6 +174,6 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
 
 
 fun main(args: Array<String>) {
-    val result = rookOrBishopThreatens(2, 11, 7, 11, 4, 4)
+    val result = rookOrBishopThreatens(2, 8, 2, 7, 8, 2)
     println("$result")
 }
