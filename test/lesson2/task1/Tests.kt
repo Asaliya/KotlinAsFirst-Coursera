@@ -48,12 +48,13 @@ class Tests {
         assertEquals(2.5, timeForHalfWay(1.0, 5.0, 2.0, 4.0, 3.0, 3.0), 1e-2)
         assertEquals(3.67, timeForHalfWay(4.0, 3.0, 1.0, 4.0, 1.0, 6.0), 1e-2)
         assertEquals(4.4, timeForHalfWay(3.0, 0.0, 1.0, 6.0, 2.0, 5.0), 1e-2)
+        assertEquals(Double.NaN, timeForHalfWay(3.0, 0.0, 1.0, 6.0, 0.0, 5.0), 1e-2)
     }
 
     @Test
     @Tag("Easy")
     fun whichRookThreatens() {
-        assertEquals(0, whichRookThreatens(1, 2, 3, 4, 5, 6))
+         assertEquals(0, whichRookThreatens(1, 2, 3, 4, 5, 6))
         assertEquals(1, whichRookThreatens(5, 3, 7, 3, 4, 8))
         assertEquals(2, whichRookThreatens(6, 8, 8, 6, 6, 3))
         assertEquals(3, whichRookThreatens(3, 7, 8, 7, 3, 5))
@@ -87,5 +88,6 @@ class Tests {
         assertEquals(2, segmentLength(2, 5, 3, 9))
         assertEquals(1, segmentLength(3, 6, 1, 4))
         assertEquals(4, segmentLength(1, 15, 10, 14))
+        assertEquals(8, segmentLength(-20, -5, -13, -1))
     }
 }

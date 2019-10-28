@@ -73,6 +73,19 @@ class Tests {
         assertEquals(10, digitNumber(Int.MAX_VALUE))
     }
 
+    //добавлены тесты для проверки решения через рекурсию
+    @Test
+    @Tag("Trivial")
+    fun digitNumberRecursion() {
+        assertEquals(1, digitNumberRecursion(0))
+        assertEquals(1, digitNumberRecursion(7))
+        assertEquals(2, digitNumberRecursion(10))
+        assertEquals(2, digitNumberRecursion(99))
+        assertEquals(5, digitNumberRecursion(10000))
+        assertEquals(7, digitNumberRecursion(5555555))
+        assertEquals(10, digitNumberRecursion(Int.MAX_VALUE))
+    }
+
     @Test
     @Tag("Easy")
     fun fib() {
@@ -87,6 +100,25 @@ class Tests {
         // Just to calculate it
         fib(50)
     }
+
+
+    @Test
+    @Tag("Easy")
+    fun fibLoop() {
+        assertEquals(1, fibLoop(1))
+        assertEquals(1, fibLoop(2))
+        assertEquals(2, fibLoop(3))
+        assertEquals(5, fibLoop(5))
+        assertEquals(21, fibLoop(8))
+        assertEquals(102334155, fibLoop(40))
+        assertEquals(1134903170, fibLoop(45))
+        assertEquals(1836311903, fibLoop(46))
+        // Just to calculate it
+        fib(50)
+    }
+
+
+
 
     @Test
     @Tag("Easy")
