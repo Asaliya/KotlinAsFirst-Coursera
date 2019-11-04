@@ -235,26 +235,6 @@ fun collatzSteps(x: Int): Int {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-//fun sinb(x: Double, eps: Double): Double {
-//    var resultX: Double = x
-//    var sin: Double = 0.0
-//    var factorial: Int = 1
-//    var i: Int = 1
-//    var l: Int = 1
-//
-//    while (eps < (resultX / factorial)) {
-//        resultX = resultX * x * x
-//        factorial = factorial(2 * i - 1)
-//        l = l * (-1)
-//        sin = sin + l * resultX / factorial
-//        i = i + 2
-//
-//        println("factorial = ${factorial}")
-//        println("result = ${resultX / factorial}")
-//        println("sin = ${sin}")
-//    }
-//    return sin
-//}
 
 fun sign(n: Int): Int =
         if (n % 2 == 0) 1

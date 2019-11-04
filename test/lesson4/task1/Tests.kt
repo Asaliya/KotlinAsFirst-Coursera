@@ -141,8 +141,7 @@ class Tests {
     @Tag("Normal")
     fun accumulate() {
         assertEquals(listOf<Double>(), accumulate(arrayListOf()))
-        assertArrayEquals(
-                listOf(3.14).toDoubleArray(),
+        assertArrayEquals(listOf(3.14).toDoubleArray(),
                 accumulate(arrayListOf(3.14)).toDoubleArray(),
                 1e-5)
         assertArrayEquals(
