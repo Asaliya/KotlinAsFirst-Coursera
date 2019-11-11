@@ -214,14 +214,20 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
 fun factorize(n: Int): List<Int> {
     val multipliers = mutableListOf<Int>()
     var div: Int = n
-    for (mult in 2..n) {
-        if (isPrime(mult) == true) {
-            while (div % mult == 0) {
-                div = div / mult
-                multipliers.add(mult)
+    if (isPrime(n) == false) {
+        for (mult in 2..(n / 2 - 1)) {
+            if (isPrime(mult) == true) {
+                while (div % mult == 0 && isPrime(div) == false) {
+                    div = div / mult
+                    multipliers.add(mult)
+                }
+                if (isPrime(div) == true && div != 1) {
+                    multipliers.add(div)
+                    return multipliers
+                }
             }
         }
-    }
+    } else multipliers.add(n)
     return multipliers.sorted()
 }
 
@@ -260,7 +266,7 @@ fun convert(n: Int, base: Int): List<Int> {
         quot = div % base
         digits.add(quot)
         div = div / base
-        if (div <= base && div != 0) {
+        if (div < base && div != 0) {
             digits.add(div)
         }
     } while (div >= base)
@@ -349,12 +355,12 @@ fun roman(n: Int): String {
     var romanString: String = ""
     var k: Int = n
     val digits = listOf<Int>(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
-    val letters= listOf<String>("M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I")
+    val letters = listOf<String>("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
     var m: Int = 0
     for (j in 0..digits.size - 1) {
         if (k / digits[j] > 0) {
-        for (i in 1..k / digits[j]) {
-                    romanString = romanString + letters[j]
+            for (i in 1..k / digits[j]) {
+                romanString = romanString + letters[j]
             }
             k = k - digits[j] * (k / digits[j])
         }
@@ -370,9 +376,9 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO ()
+fun russian(n: Int): String = TODO()
 
 fun main(args: Array<String>) {
-    val result = russian(78)
+    val result = factorize(2145683602)
     println("$result")
 }
