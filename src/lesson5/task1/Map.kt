@@ -203,7 +203,42 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    var cheapestStuff: String? = null
+    var cheapestStuffSev: String? = ""
+    val stuffList = stuff.toList()
+    var minCost = 0.0
+
+    for (i in 0..stuffList.size - 1) {
+        if (kind == stuffList[i].second.first) {
+            cheapestStuff = stuffList[i].first
+
+            for (j in i + 1..stuffList.size - 1)
+                if (kind == stuffList[j].second.first && stuffList[i].second.second >= stuffList[j].second.second) {
+                    cheapestStuff = stuffList[j].first
+                    println("1 ${cheapestStuff}")
+                    minCost = stuffList[j].second.second
+                }
+        }
+        println("1 $cheapestStuff")
+        break
+
+    }
+
+    //если товаров с минимальной ценой несколько:
+    // находим доп. наименования товара заданного типа с минимальной стоимостью
+    for (i in 0..stuffList.size - 1)
+        if (kind == stuffList[i].second.first && minCost == stuffList[i].second.second) {
+            if (stuffList[i].first != cheapestStuff) {
+                cheapestStuffSev = cheapestStuffSev + ", " + stuffList[i].first
+            }
+        }
+    return when {
+        cheapestStuff == null -> null
+        cheapestStuffSev.toString().isNotEmpty() -> cheapestStuff + cheapestStuffSev
+        else -> cheapestStuff
+    }
+}
 
 /**
  * Сложная
@@ -324,16 +359,16 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean =
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
-    var doubles: Map<String, Int> = mapOf()
+    var repeats: Map<String, Int> = mapOf()
     for (letter in list.toSet()) {
         if (counting(letter, list) > 1)
-        doubles = doubles + Pair(letter, counting(letter, list))
+            repeats = repeats + Pair(letter, counting(letter, list))
     }
-return doubles
+    return repeats
 }
 
-fun counting (str: String,list: List<String>): Int {
-var counter = 0
+fun counting(str: String, list: List<String>): Int {
+    var counter = 0
     for (element in list)
         if (element == str)
             ++counter
@@ -356,7 +391,7 @@ fun hasAnagrams(words: List<String>): Boolean {
             if (words[i].toSet() == words[j].toSet())
                 return true
         }
-return false
+    return false
 }
 
 /**
@@ -383,7 +418,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
                 return i to j
             }
         }
- return (-1 to -1)
+    return (-1 to -1)
 }
 
 /**
@@ -409,6 +444,6 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
 
 
 fun main(args: Array<String>) {
-    val result = canBuildFrom(listOf('a', 'm', 'r', 'g', 'n'), "AnaGramMa")
+    val result = findCheapestStuff(mapOf("Мария" to ("печенье" to 120.0), "Орео" to ("печенье" to 120.0)), "печенье")
     println("$result")
 }
