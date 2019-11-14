@@ -42,22 +42,22 @@ fun timeSecondsToStr(seconds: Int): String {
 /**
  * Пример: консольный ввод
  */
-fun main(args: Array<String>) {
-    println("Введите время в формате ЧЧ:ММ:СС")
-    val line = readLine()
-    if (line != null) {
-        val seconds = timeStrToSeconds(line)
-        if (seconds == -1) {
-            println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
-            println("Прошло секунд с начала суток: $seconds")
-        }
-    }
-    else {
-        println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
-    }
-}
+//fun main(args: Array<String>) {
+//    println("Введите время в формате ЧЧ:ММ:СС")
+//    val line = readLine()
+//    if (line != null) {
+//        val seconds = timeStrToSeconds(line)
+//        if (seconds == -1) {
+//            println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
+//        }
+//        else {
+//            println("Прошло секунд с начала суток: $seconds")
+//        }
+//    }
+//    else {
+//        println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
+//    }
+//}
 
 
 /**
@@ -71,7 +71,52 @@ fun main(args: Array<String>) {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val parts = str.split(" ").toList()
+
+    try {
+        return when {
+            (parts[0].toInt() == 0 || monthNumberFromString(parts[1]) == 0 || parts[2].toInt() == 0) -> ""
+            parts.size > 3 -> ""
+            parts[0].toInt() <= daysInMonth(monthNumberFromString(parts[1]), parts[2].toInt()) -> String.format("%02d.%02d.%d", parts[0].toInt(), monthNumberFromString(parts[1]), parts[2].toInt())
+            else -> ""
+        }
+    } catch (e: IndexOutOfBoundsException) {
+        return ""
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+}
+
+fun daysInMonth(month: Int, year: Int): Int {
+
+    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
+        return 31
+    if (month == 4 || month == 6 || month == 9 || month == 11)
+        return 30
+    if (year % 4 == 0 && year % 100 != 0 || year % 100 == 0 && year % 400 == 0)
+        if (month == 2)
+            return 29
+    return 28
+}
+
+fun monthNumberFromString(month: String): Int {
+    return when {
+        month == "января" -> 1
+        month == "февраля" -> 2
+        month == "марта" -> 3
+        month == "апреля" -> 4
+        month == "мая" -> 5
+        month == "июня" -> 6
+        month == "июля" -> 7
+        month == "августа" -> 8
+        month == "сентября" -> 9
+        month == "октября" -> 10
+        month == "ноября" -> 11
+        month == "декабря" -> 12
+        else -> 0
+    }
+}
 
 /**
  * Средняя
@@ -83,7 +128,42 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val parts = digital.split(".").toList()
+
+    try {
+        return when {
+            parts[0].toInt() == 0 || parts[1].toInt() == 0 || parts[2].toInt() == 0 -> ""
+            parts.size > 3 -> ""
+            parts[0].toInt() <= daysInMonth(parts[1].toInt(), parts[2].toInt()) -> String.format("%d %s %d", parts[0].toInt(), monthNameFromNumber(parts[1].toInt()), parts[2].toInt())
+            else -> ""
+            //%[parameter][flags][width][.precision][length]type
+        }
+    } catch (e: IndexOutOfBoundsException) {
+        return ""
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+
+}
+
+fun monthNameFromNumber(month: Int): String {
+    return when {
+        month == 1 -> "января"
+        month == 2 -> "февраля"
+        month == 3 -> "марта"
+        month == 4 -> "апреля"
+        month == 5 -> "мая"
+        month == 6 -> "июня"
+        month == 7 -> "июля"
+        month == 8 -> "августа"
+        month == 9 -> "сентября"
+        month == 10 -> "октября"
+        month == 11 -> "ноября"
+        month == 12 -> "декабря"
+        else -> ""
+    }
+}
 
 /**
  * Средняя
@@ -208,3 +288,9 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+
+
+fun main(args: Array<String>) {
+    val result = dateDigitToStr("01.02.19")
+    println("$result")
+}
