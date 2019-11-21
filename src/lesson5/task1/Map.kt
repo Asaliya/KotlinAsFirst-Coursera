@@ -440,10 +440,27 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    var worthTreasure: Map<Double, String> = mapOf()
+    var backpack: List<String> = listOf()
+
+    for ((key, value) in treasures)
+        if (value.second != 0 && value.first != 0) {
+            worthTreasure = worthTreasure + ((value.second / value.first).toDouble() to key)
+        }
+    val worthes = worthTreasure.keys.sortedDescending()
+    var weight: Double = 0.0
+    while (capacity <= weight.toInt())
+        for (i in 0..worthes.size - 1) {
+            backpack = backpack + worthTreasure.getOrDefault(worthes[i], "")
+            weight = weight + treasures.getOrDefault(worthTreasure.getOrDefault(worthes[i], ""), 0 to 0).first.toDouble()
+            println("$weight")
+        }
+    return backpack.toSet()
+}
 
 
 fun main(args: Array<String>) {
-    val result = findCheapestStuff(mapOf("Мария" to ("печенье" to 120.0), "Орео" to ("печенье" to 120.0)), "печенье")
+    val result = bagPacking(mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000), "Алмаз" to (350 to 2500), "Сапфир" to (100 to 1800), "Рубин" to (500 to 3000)), 2500)
     println("$result")
 }
