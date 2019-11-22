@@ -441,26 +441,33 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *   ) -> emptySet()
  */
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
-    var worthTreasure: Map<Double, String> = mapOf()
+    var worthToTreasure: Map<Double, String> = mapOf()
     var backpack: List<String> = listOf()
 
     for ((key, value) in treasures)
-        if (value.second != 0 && value.first != 0) {
-            worthTreasure = worthTreasure + ((value.second / value.first).toDouble() to key)
+        if (value.second != 0 && value.first != 0 && key != "") {
+            worthToTreasure = worthToTreasure + ((value.second.toDouble() / value.first.toDouble()) to key)
         }
-    val worthes = worthTreasure.keys.sortedDescending()
+    val worthes = worthToTreasure.keys.sortedDescending()
     var weight: Double = 0.0
-    while (capacity <= weight.toInt())
-        for (i in 0..worthes.size - 1) {
-            backpack = backpack + worthTreasure.getOrDefault(worthes[i], "")
-            weight = weight + treasures.getOrDefault(worthTreasure.getOrDefault(worthes[i], ""), 0 to 0).first.toDouble()
-            println("$weight")
+    for (i in 0..worthes.size - 1) {
+        val treasureToPack = worthToTreasure.getOrDefault(worthes[i], "")
+        if ((treasures.getOrDefault(treasureToPack, 1 to 0).first.toDouble() + weight).toInt() > capacity) continue
+
+        weight = weight + treasures.getOrDefault(treasureToPack, 1 to 0).first.toDouble()
+        backpack = backpack + worthToTreasure.getOrDefault(worthes[i], "")
+        worthToTreasure = worthToTreasure - worthes[i]
+
+        for (i in 0..worthes.size - 2) {
+            if ((treasures.getOrDefault(worthToTreasure.getOrDefault(worthes[i + 1], ""), 1 to 0).first.toDouble() + weight).toInt() > capacity) break
         }
+    }
     return backpack.toSet()
 }
 
 
 fun main(args: Array<String>) {
-    val result = bagPacking(mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000), "Алмаз" to (350 to 2500), "Сапфир" to (100 to 1800), "Рубин" to (500 to 3000)), 2500)
+    val result = bagPacking(mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000)),
+            450)
     println("$result")
 }
