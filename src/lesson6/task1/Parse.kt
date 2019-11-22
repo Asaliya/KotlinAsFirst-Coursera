@@ -43,15 +43,15 @@ fun timeSecondsToStr(seconds: Int): String {
  * Пример: консольный ввод
  */
 //fun main(args: Array<String>) {
-//    println("Введите время в формате ЧЧ:ММ:СС")
-//    val line = readLine()
-//    if (line != null) {
-//        val seconds = timeStrToSeconds(line)
-//        if (seconds == -1) {
-//            println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
+//    println("Введите номер в формате ","+_ (___) ___-__-__",")
+//    val phone = readLine()
+//    if (phone != null) {
+//        val number = flattenPhoneNumber(phone)
+//        if (number == "") {
+//            println("Введённая строка $phone не соответствует формату ","+_ (___) ___-__-__",")
 //        }
 //        else {
-//            println("Прошло секунд с начала суток: $seconds")
+//            println("Отформатированный номер: number")
 //        }
 //    }
 //    else {
@@ -177,7 +177,25 @@ fun monthNameFromNumber(month: Int): String {
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    var signs = phone.split("")
+    var number = ""
+    try {
+        val signsToDelete = phone.split("").filter({ it == "-" ||  it == " " ||  it == "(" ||  it == ")"})
+        signs = signs - signsToDelete
+              if ("1234567890+".split("").toSet().intersect(signs.toSet()) != signs.toSet()) throw NumberFormatException()
+        for (i in 2..signs.size - 1) {
+
+            if (signs[i] == "+") throw NumberFormatException()}
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+for (element in signs)
+    number = number + element
+
+    return number
+
+}
 
 /**
  * Средняя
@@ -197,10 +215,8 @@ fun bestLongJump(jumps: String): Int {
     for (i in 0..parts.size - 1) {
         println("1.${parts[i]}")
         jumpsLengths = jumpsLengths + (parts[i].toIntOrNull() ?: 0)
-        println("2.${jumpsLengths}")
     }
-    println("3.${jumpsLengths.max() ?: 0}")
-    println("4.${jumpsLengths.toSet().size}")
+
     return when {
         (jumpsLengths.max() ?: 0) == 0 -> -1
         (jumpsLengths.toSet() - 0).size == 1 -> -1
@@ -458,6 +474,6 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TO
 
 
 fun main(args: Array<String>) {
-    val result = fromRoman("FRS")
+    val result = flattenPhoneNumber("7 (921) 123+45-67")
     println("$result")
 }
