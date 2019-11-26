@@ -3,6 +3,7 @@
 package lesson7.task1
 
 import java.io.File
+import kotlin.math.*
 
 /**
  * Пример
@@ -54,7 +55,35 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    var numberOfStrings: Map<String, Int> = mapOf()
+
+
+    for (s in 0..substrings.size - 1) {
+        val lettersInWord = substrings[s].split("") - "" - ""
+        var lettersInWordLC: List<String> = listOf()
+        for (element in lettersInWord)
+            lettersInWordLC = lettersInWordLC + element.toLowerCase()
+
+        var count: Int = lettersInWordLC.size
+        var number: Int = 0
+
+        for (line in File(inputName).readLines()) {
+            val lettersInText = line.split("")
+
+            var lettersInTextLC: List<String> = listOf()
+            for (element in lettersInText)
+                lettersInTextLC = lettersInTextLC + element.toLowerCase()
+
+            for (i in 0..lettersInTextLC.size - count - 1) {
+                if (lettersInWordLC == lettersInTextLC.subList(i, i + count))
+                    number += 1
+            }
+        }
+        numberOfStrings = numberOfStrings + (substrings[s] to number)
+    }
+return numberOfStrings
+}
 
 
 /**
@@ -71,8 +100,76 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val outputStream = File(outputName).bufferedWriter()
+
+    for (line in File(inputName).readLines()) {
+        if (line.isEmpty())
+            outputStream.newLine()
+
+        for (word in line.split(" ")) {
+            val letters = word.split("")
+            for (letter in 0..letters.size - 2) {
+                if (letters[letter].toLowerCase() == "ж" && letters[letter + 1] == "Ы")
+                    outputStream.write("И")
+                if (letters[letter].toLowerCase() == "ж" && letters[letter + 1] == "ы")
+                    outputStream.write("и")
+                if (letters[letter].toLowerCase() == "ш" && letters[letter + 1] == "Ы")
+                    outputStream.write("И")
+                if (letters[letter].toLowerCase() == "ш" && letters[letter + 1] == "ы")
+                    outputStream.write("и")
+                if (letters[letter].toLowerCase() == "ж" && letters[letter + 1] == "Ю")
+                    outputStream.write("У")
+                if (letters[letter].toLowerCase() == "ж" && letters[letter + 1] == "ю")
+                    outputStream.write("у")
+                if (letters[letter].toLowerCase() == "ш" && letters[letter + 1] == "Ю")
+                    outputStream.write("У")
+                if (letters[letter].toLowerCase() == "ш" && letters[letter + 1] == "ю")
+                    outputStream.write("у")
+                if (letters[letter].toLowerCase() == "ч" && letters[letter + 1] == "Ю")
+                    outputStream.write("У")
+                if (letters[letter].toLowerCase() == "ч" && letters[letter + 1] == "ю")
+                    outputStream.write("у")
+                if (letters[letter].toLowerCase() == "щ" && letters[letter + 1] == "Ю")
+                    outputStream.write("У")
+                if (letters[letter].toLowerCase() == "щ" && letters[letter + 1] == "ю")
+                    outputStream.write("у")
+                if (letters[letter].toLowerCase() == "ш" && letters[letter + 1] == "Я")
+                    outputStream.write("А")
+                if (letters[letter].toLowerCase() == "ш" && letters[letter + 1] == "я")
+                    outputStream.write("а")
+                if (letters[letter].toLowerCase() == "ж" && letters[letter + 1] == "Я")
+                    outputStream.write("А")
+                if (letters[letter].toLowerCase() == "ж" && letters[letter + 1] == "я")
+                    outputStream.write("а")
+                if (letters[letter].toLowerCase() == "ч" && letters[letter + 1] == "Я")
+                    outputStream.write("А")
+                if (letters[letter].toLowerCase() == "ч" && letters[letter + 1] == "я")
+                    outputStream.write("а")
+                if (letters[letter].toLowerCase() == "щ" && letters[letter + 1] == "Я")
+                    outputStream.write("А")
+                if (letters[letter].toLowerCase() == "щ" && letters[letter + 1] == "я")
+                    outputStream.write("а")
+                else
+                    outputStream.write(letter)
+            }
+        }
+        outputStream.close()
+    }
 }
+
+
+private fun toDragonSpeak(phrase: String) =
+        phrase.replace(Regex("[aeiou]")) {
+            when (it.value) {
+                "a" -> "4"
+                "e" -> "3"
+                "i" -> "1"
+                "o" -> "0"
+                "u" -> "|_|"
+                else -> it.value
+            }
+        }
+
 
 /**
  * Средняя
@@ -144,7 +241,20 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> {
+    //File(inputName) == File("135-0.txt")
+    val text = File(inputName).readText().toLowerCase()
+    val r = Regex("""\p{javaLowerCase}+""")
+    val matches = r.findAll(text)
+    val wordGroups = matches.map { it.value } // {(word, freq) in wordGroups}
+            .groupBy { it }
+            .map { Pair(it.key, it.value.size) }
+            .sortedByDescending { it.second }
+            .take(20)
+return wordGroups.toMap()
+}
+
+
 
 /**
  * Средняя
@@ -429,3 +539,9 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     TODO()
 }
 
+
+
+fun main(args: Array<String>) {
+    val result = countSubstrings("input/substrings_in1.txt", listOf("*", "Вывести его", "якяк"))
+    println("$result")
+}
